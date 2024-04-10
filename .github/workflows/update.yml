@@ -1,0 +1,22 @@
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - run: nix build nixpkgs#cacert
+      - run: cp result/etc/ssl/certs/ca-bundle.crt cacert.pem
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Automated update"
+          commit_author: "Scheduler"
