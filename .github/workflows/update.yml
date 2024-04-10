@@ -1,4 +1,5 @@
 on:
+  push:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * *"
@@ -11,22 +12,21 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
 
       - run: nix build nixpkgs#cacert
       - run: cp result/etc/ssl/certs/ca-bundle.crt cacert.pem
       - run: rm -rf result
 
+      - uses: Nelyx/action-calver@v1.0.0
+        with:
+          default_branch: "refs/heads/main"
+          format: "YYYYMMDD"
+          version_prefix: "v0."
+
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Automated update"
-          commit_author: "Scheduler <github-actions[bot]@users.noreply.github.com>"
-
-      - name: Set Calver Version
-        uses: Nelyx/action-calver@v1.0.0
-        id: setcalver
-        with:
-          default_branch: "refs/heads/main"
-          format: "YYYY.M.D"
-          version_prefix: "v0."
+          commit_author: "Workflow <github-actions[bot]@users.noreply.github.com>"
+          tagging_message: "${{ env.PACKAGE_VERSION }}"
