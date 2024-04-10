@@ -22,4 +22,11 @@ jobs:
         with:
           commit_message: "Automated update"
           commit_author: "Scheduler <github-actions[bot]@users.noreply.github.com>"
+
+      - name: Set Calver Version
+        uses: Nelyx/action-calver@v1.0.0
+        id: setcalver
+        with:
           default_branch: "refs/heads/main"
+          format: "YYYY.M.D"
+          version_prefix: "v0."
