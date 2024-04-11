@@ -1,4 +1,4 @@
-package cert
+package cacert
 
 import (
 	_ "embed"
