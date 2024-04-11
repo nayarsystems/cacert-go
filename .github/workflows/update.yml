@@ -19,7 +19,7 @@ jobs:
       - run: cp result/etc/ssl/certs/ca-bundle.crt cacert.pem
       - run: rm -rf result
 
-      - uses: Nelyx/action-calver@v1.0.0
+      - uses: pho/action-calver@191a552404f6eb8abcb3f8005ca9d5b8e71349e0
         with:
           default_branch: "refs/heads/main"
           format: "YYYYMMDD"
